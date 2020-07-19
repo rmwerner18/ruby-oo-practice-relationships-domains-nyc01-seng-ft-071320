@@ -230,3 +230,71 @@ class Client
         @locations = updated_locations
     end
 end
+
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+
+class User 
+    @@all = []
+    def initialize(name)
+        @name = name
+        User.all << self
+    end
+
+    def self.all 
+        @@all
+    end
+
+    def pledges
+        Pledge.all.select {|pledge| pledge.user == self}
+    end
+
+    def projects_backing
+        pledges.map {|pledge| pledge.project}
+    end
+
+    def projects_hosting
+        Project.all.select {|project| project.user == self}
+    end
+end
+
+class Pledge
+    @@all = []
+    attr_reader :user, :project, :amount
+    def initialize(user, project, amount)
+        @user = user
+        @project = project
+        @amount = amount
+        Pledge.all << self
+    end
+
+    def self.all
+        @@all
+    end
+end
+
+class Project
+    @@all = []
+    attr_accessor :user, :name
+    def initialize(user, name)
+        @user = user 
+        @name = name
+        Project.all << self
+    end
+
+    def self.all
+        @@all
+    end
+
+    def pledges
+        Pledge.all.select {|pledge| pledge.project == self}
+    end
+
+    def backers
+        pledges.map {|pledge| pledge.user}
+    end
+end
