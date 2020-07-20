@@ -67,15 +67,18 @@ jim = User.new("Jim")
 john = User.new("John")
 mike = User.new("Mike")
 
-animals = Project.new(jim, "save the animals")
-album = Project.new(mike, "fund my album")
-treatment = Project.new(john, "fund my treatment")
-album2 = Project.new(mike, "fund my next album")
+animals = Project.new(jim, "save the animals", 1000)
+album = Project.new(mike, "fund my album", 5000)
+treatment = Project.new(john, "fund my treatment", 1000)
+album2 = Project.new(mike, "fund my next album", 300)
+restaurant = Project.new(jim, "help my restaurant", 5000)
 
 
 pledge1 = Pledge.new(john, album, 300)
 pledge2 = Pledge.new(mike, animals, 200)
 pledge3 = Pledge.new(john, animals, 250)
 pledge4 = Pledge.new(jim, treatment, 500)
+pledge5 = Pledge.new(mike, treatment, 500)
+pledge6 = Pledge.new(jim, treatment, 200)
 
 Pry.start

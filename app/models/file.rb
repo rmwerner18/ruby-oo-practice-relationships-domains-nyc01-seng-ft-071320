@@ -260,6 +260,21 @@ class User
     def projects_hosting
         Project.all.select {|project| project.user == self}
     end
+
+    def self.highest_pledge
+        pledges = Pledge.all.map {|pledge| pledge.amount}
+        max = pledges.max {|pledge1, pledge2| pledge1 <=> pledge2}
+        max_pledge = Pledge.all.find {|pledge| pledge.amount == max}
+        max_pledge.user
+    end
+
+    def self.multi_pledger
+        User.all.select {|user| user.pledges.length > 1}
+    end
+
+    def self.project_creator
+        User.all.select {|user| user.projects_hosting != nil}
+    end
 end
 
 class Pledge
@@ -275,26 +290,51 @@ class Pledge
     def self.all
         @@all
     end
+
 end
 
 class Project
     @@all = []
-    attr_accessor :user, :name
-    def initialize(user, name)
+    attr_accessor :user, :name, :goal
+    def initialize(user, name, goal)
         @user = user 
         @name = name
+        @goal = goal
         Project.all << self
     end
-
+    
     def self.all
         @@all
     end
-
+    
     def pledges
         Pledge.all.select {|pledge| pledge.project == self}
     end
-
+    
     def backers
         pledges.map {|pledge| pledge.user}
+    end
+    
+    def self.no_pledges
+        Project.all.select {|project| project.pledges.length == 0}
+    end
+
+    def above_goal?
+        amounts = pledges.map {|pledge| pledge.amount}
+        if amounts.sum > goal
+            true
+        else
+            false
+        end
+    end
+
+    def self.above_goal
+        Project.all.select {|project| project.above_goal? == true}
+    end
+    
+    def self.most_backers
+        backer_counts = Project.all.map {|project| project.backers.count}
+        max = backer_counts.max {|count1, count2| count1 <=> count2}
+        Project.all.find {|project| project.backers.count == max}
     end
 end
