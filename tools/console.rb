@@ -81,4 +81,55 @@ pledge4 = Pledge.new(jim, treatment, 500)
 pledge5 = Pledge.new(mike, treatment, 500)
 pledge6 = Pledge.new(jim, treatment, 200)
 
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+
+leo = Actor.new("Leonardo DiCaprio")
+tom = Actor.new("Tom Hanks")
+christopher = Actor.new("Christopher Walken")
+mike = Actor.new("Mike Myers")
+josh = Actor.new("Josh Radnor")
+neil = Actor.new("Neil Patrick Harris")
+
+frank = Character.new(leo, "Frank Abagnale")
+hannity = Character.new(tom, "Hannity")
+forrest = Character.new(tom, "Forrest Gump")
+mr_abagnale = Character.new(christopher, "Mr. Abagnale")
+austin = Character.new(mike, "Austin Powers")
+dr_evil = Character.new(mike, "Dr. Evil")
+ted = Character.new(josh, "Ted Mosby")
+barney = Character.new(neil, "Barney Stinson")
+barneys_alter_ego = Character.new(neil, "Ted Mosby, Architect")
+goldmember = Character.new(mike, "Goldmember")
+
+catch_me = Movie.new("Catch Me If You Can")
+forrest_gump = Movie.new("Forrest Gump")
+austin_powers = Movie.new("Austin Powers")
+himym_movie = Movie.new("How I Met Your Mother")
+himym = Show.new("How I Met Your Mother")
+
+Appearance.new(frank, catch_me, "movie")
+Appearance.new(hannity, catch_me, "movie")
+Appearance.new(mr_abagnale, catch_me, "movie")
+Appearance.new(forrest, forrest_gump, "movie")
+Appearance.new(austin, austin_powers, "movie")
+Appearance.new(dr_evil, austin_powers, "movie")
+Appearance.new(goldmember, austin_powers, "movie")
+Appearance.new(ted, himym_movie, "movie")
+Appearance.new(barney, himym_movie, "movie")
+Appearance.new(ted, himym, "show")
+Appearance.new(barney, himym, "show")
+Appearance.new(barneys_alter_ego, himym, "show")
+
+run
+
+
+
+
+
+
 Pry.start

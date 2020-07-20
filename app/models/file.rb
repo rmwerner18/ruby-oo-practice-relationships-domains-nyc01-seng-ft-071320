@@ -338,3 +338,183 @@ class Project
         Project.all.find {|project| project.backers.count == max}
     end
 end
+
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+#==========================================================================
+
+class Actor
+    attr_reader :name
+    @@all = []
+    def initialize(name)
+        @name = name
+        Actor.all << self
+    end
+
+    def self.all
+        @@all
+    end
+
+    def characters
+        Character.all.select {|char| char.actor == self}
+    end
+
+    def characters_names
+        characters.map {|character| character.name}
+    end
+
+    def self.most_characters
+        Actor.all.max_by {|actor| actor.characters.count}
+    end
+
+    def appearances
+        characters.map {|character| character.appearances}.flatten
+    end
+
+    def movie_appearances
+        appearances.select {|appearance| appearance.movie_or_show == "movie"}
+    end
+
+    def movies
+        movie_appearances.map {|appearance| appearance.title}.uniq
+    end
+
+    def show_appearances
+        appearances.select {|appearance| appearance.movie_or_show == "show"}
+    end
+
+    def shows
+        show_appearances.map {|appearance| appearance.title}.uniq
+    end
+    
+    def movie_names
+        movies.map {|movie| movie.title}
+    end
+
+    def show_names
+        shows.map {|show| show.title}
+    end
+
+    def self.find_by_name(name_string)
+        Actor.all.find {|actor| actor.name == name_string}
+    end
+end
+
+class Character
+    attr_accessor :actor, :name
+    @@all = []
+    def initialize(actor, name)
+        @actor = actor
+        @name = name
+        Character.all << self
+    end
+
+    def self.all
+        @@all
+    end
+
+    def appearances 
+        Appearance.all.select {|appearance| appearance.character == self}
+    end
+
+    def shows 
+        appearances.select {|appearance| appearance.movie_or_show == "show"}
+    end
+
+    def movies
+        appearances.select {|appearance| appearance.movie_or_show == "movie"}
+    end
+
+
+    def self.most_appearances
+        Character.all.max_by {|char| char.appearances.count}
+    end
+
+end
+
+class Appearance
+    attr_accessor :character, :title, :movie_or_show
+    @@all = []
+    def initialize(character, title, movie_or_show)
+        @character = character
+        @title = title
+        @movie_or_show = movie_or_show
+        Appearance.all << self
+    end
+
+    def self.all
+        @@all
+    end
+end
+
+class Show
+    attr_accessor :title
+    @@all = []
+    def initialize(title)
+        @title = title
+        Show.all << self
+    end
+    
+    def self.all
+        @@all
+    end
+
+    def self.all_appearances
+        Appearance.all.select {|appearance| appearance.movie_or_show == "show"}
+    end
+    
+    def appearances 
+        Show.all_appearances.select {|appearance| appearance.title == self}
+    end
+
+    def on_the_big_screen
+        Movie.all.select {|movie| movie.title == self.title}
+    end
+end
+
+class Movie
+    attr_accessor :title
+    @@all = []
+    def initialize(title)
+        @title = title
+        Movie.all << self
+    end
+
+    def self.all
+        @@all
+    end
+
+    def self.all_appearances
+        Appearance.all.select {|appearance| appearance.movie_or_show == "movie"}
+    end
+
+    def appearances
+        Movie.all_appearances.select {|appearance| appearance.title == self}
+    end
+
+    def actors
+        appearances.map {|appearance| appearance.character.actor}.uniq
+    end
+ 
+    def self.most_actors
+        Movie.all.max_by {|movie| movie.actors.count}
+    end
+end    
+
+def character_profile(name)
+    puts "Name: #{name.name}"
+    puts "Movies: #{name.movie_names}"
+    puts "Shows: #{name.show_names}"
+    puts "Characters: #{name.characters_names}"
+end
+
+
+def run
+    puts "Welcome to imdb! Please enter an actor's name."
+    name = Actor.find_by_name(gets.chomp)
+    puts "Here is that actor's profile"
+    puts character_profile(name)
+end
